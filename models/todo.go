@@ -8,4 +8,5 @@ type Todo struct {
 	Completed bool      `json:"completed"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+	UserID    uint      `json:"user_id" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
