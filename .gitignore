@@ -1,0 +1,25 @@
+# Binaries for programs and executables
+*.exe
+*.out
+*.dll
+
+# Logs
+*.log
+
+# Dependency directories
+vendor/
+
+# Environment variables
+.env
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
