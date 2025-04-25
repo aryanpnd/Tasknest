@@ -5,52 +5,112 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TaskNest - Your Todos</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
+    :root {
+      --primary: #6C63FF;
+      --primary-hover: #5A52D5;
+      --bg-color: #121212;
+      --card-bg: #1E1E1E;
+      --text-primary: #FFFFFF;
+      --text-secondary: #B0B0B0;
+      --input-bg: #2D2D2D;
+      --input-border: #3D3D3D;
+      --input-focus: #6C63FF;
+      --success: #5CDB95;
+      --success-hover: #4CAF50;
+      --danger: #FF5C5C;
+      --danger-hover: #F44336;
+      --item-bg: #252525;
+    }
+    
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      transition: all 0.2s ease;
+    }
+    
+    body {
+      font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+      background-color: var(--bg-color);
+      background-image: 
+        radial-gradient(circle at 15% 85%, rgba(108, 99, 255, 0.1) 0%, transparent 25%),
+        radial-gradient(circle at 85% 25%, rgba(108, 99, 255, 0.08) 0%, transparent 25%);
+      color: var(--text-primary);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
     }
 
     .container {
       max-width: 800px;
       margin: 50px auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      background: var(--card-bg);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    header {
+      margin-bottom: 30px;
+      text-align: center;
     }
 
     h1 {
-      text-align: center;
-      color: #333;
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      background: linear-gradient(45deg, var(--primary), #A78BFA);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     form {
       display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 30px;
     }
 
     input[type="text"] {
       flex: 1;
-      padding: 10px;
+      padding: 16px;
       font-size: 16px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+      border-radius: 8px;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--text-primary);
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+      outline: none;
     }
 
     button {
-      padding: 10px 20px;
-      background: #007BFF;
-      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
 
-    button:hover {
-      background: #0056b3;
+    button.primary {
+      background: linear-gradient(45deg, var(--primary), #5A52D5);
+      color: white;
+      box-shadow: 0 4px 12px rgba(108, 99, 255, 0.3);
+    }
+
+    button.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(108, 99, 255, 0.4);
+    }
+
+    button.primary:active {
+      transform: translateY(0);
     }
 
     ul {
@@ -59,23 +119,28 @@
     }
 
     li {
-      background: #f9f9f9;
-      padding: 12px;
-      border-radius: 5px;
+      background: var(--item-bg);
+      padding: 16px;
+      border-radius: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
-      border: 1px solid #ddd;
+      margin-bottom: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     .todo-text {
       flex: 1;
+      font-size: 16px;
+      word-break: break-word;
+      padding-right: 15px;
     }
 
     .completed {
       text-decoration: line-through;
-      color: gray;
+      color: var(--text-secondary);
+      opacity: 0.7;
     }
 
     .actions {
@@ -83,32 +148,71 @@
       gap: 10px;
     }
 
-    .delete-btn, .toggle-btn {
-      padding: 6px 10px;
+    .toggle-btn, .delete-btn {
+      padding: 8px 16px;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       color: #fff;
+      font-weight: 500;
       cursor: pointer;
-    }
-
-    .delete-btn {
-      background-color: #dc3545;
+      min-width: 70px;
     }
 
     .toggle-btn {
-      background-color: #28a745;
+      background-color: var(--success);
+    }
+
+    .toggle-btn:hover {
+      background-color: var(--success-hover);
+    }
+
+    .delete-btn {
+      background-color: var(--danger);
+    }
+
+    .delete-btn:hover {
+      background-color: var(--danger-hover);
+    }
+
+    #logout-btn {
+      background: #333;
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 30px;
+      padding: 14px 24px;
+      width: 100%;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    #logout-btn:hover {
+      background: #444;
+      transform: translateY(-2px);
+    }
+
+    .empty-list {
+      text-align: center;
+      color: var(--text-secondary);
+      padding: 30px 0;
+      font-style: italic;
     }
   </style>
 </head>
 <body>
 <div class="container">
-  <h1>Your TaskNest Todos</h1>
+  <header>
+    <h1>Your TaskNest Todos</h1>
+  </header>
+  
   <form id="todo-form">
     <input type="text" id="todo-input" placeholder="Enter a new task" required />
-    <button type="submit">Add</button>
+    <button type="submit" class="primary">Add</button>
   </form>
+  
   <ul id="todo-list"></ul>
-  <button id="logout-btn" style="margin-top: 20px; background: #555;">Logout</button>
+  
+  <button id="logout-btn">Logout</button>
 </div>
 
 <script>
@@ -120,16 +224,34 @@
   const API_URL = "/todos";
 
   async function fetchTodos() {
-    const res = await fetch(API_URL, {
-      credentials: 'include' // send cookie
-    });
-    if (!res.ok) return alert("Failed to fetch todos. Maybe you're logged out?");
-    const todos = await res.json();
-    renderTodos(todos);
+    try {
+      const res = await fetch(API_URL, {
+        credentials: 'include' // send cookie
+      });
+      
+      if (!res.ok) {
+        throw new Error("Failed to fetch todos");
+      }
+      
+      const todos = await res.json();
+      renderTodos(todos);
+    } catch (error) {
+      alert("Failed to fetch todos. Maybe you're logged out?");
+      window.location.href = "/login";
+    }
   }
 
   function renderTodos(todos) {
     list.innerHTML = '';
+    
+    if (todos.length === 0) {
+      const emptyMessage = document.createElement('div');
+      emptyMessage.className = 'empty-list';
+      emptyMessage.textContent = 'No tasks yet. Add a new task to get started!';
+      list.appendChild(emptyMessage);
+      return;
+    }
+    
     todos.forEach(todo => {
       const li = document.createElement('li');
 
@@ -163,41 +285,69 @@
     e.preventDefault();
     const title = input.value.trim();
     if (title) {
-      await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ title })
-      });
-      input.value = '';
-      fetchTodos();
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ title })
+        });
+        
+        if (!response.ok) {
+          throw new Error("Failed to add todo");
+        }
+        
+        input.value = '';
+        fetchTodos();
+      } catch (error) {
+        alert("Failed to add task. Please try again.");
+      }
     }
   });
 
   async function toggleTodo(todo) {
-    await fetch(`${API_URL}/${todo.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ ...todo, completed: !todo.completed })
-    });
-    fetchTodos();
+    try {
+      const response = await fetch(`${API_URL}/${todo.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ ...todo, completed: !todo.completed })
+      });
+      
+      if (!response.ok) {
+        throw new Error("Failed to update todo");
+      }
+      
+      fetchTodos();
+    } catch (error) {
+      alert("Failed to update task. Please try again.");
+    }
   }
 
   async function deleteTodo(id) {
-    await fetch(`${API_URL}/${id}`, {
-      method: 'DELETE',
-      credentials: 'include'
-    });
-    fetchTodos();
+    try {
+      const response = await fetch(`${API_URL}/${id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        throw new Error("Failed to delete todo");
+      }
+      
+      fetchTodos();
+    } catch (error) {
+      alert("Failed to delete task. Please try again.");
+    }
   }
 
   logoutBtn.addEventListener('click', async () => {
-    // Just clear the cookie (can be backend route or frontend-only)
+    // Clear the cookie
     document.cookie = "jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
     window.location.href = "/login";
   });
 
+  // Initial fetch
   fetchTodos();
 </script>
 </body>
